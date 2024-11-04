@@ -154,14 +154,49 @@ function Questionnaire() {
   function handleMultiSelect(item) {
     let temp = { ...currentQuestion };
     let i = temp.selections.indexOf(item);
-    // console.log({ i });
+    console.log(temp);
+    console.log({ i });
 
     if (i < 0) {
       temp.selections.push(item);
     } else if (i > -1) {
       temp.selections = temp.selections.filter((x) => x != item);
     }
+    // STEP OUTS
 
+    // Remove selected options from Question 8
+    const selectionsToRemoveFromQ8 = temp.selections;
+    if (temp.hs_formName == "q6" || temp.hs_formName == "q8") {
+      let tempQuestions = [...questionList];
+      if (temp.hs_formName == "q6") {
+        console.log(tempQuestions);
+        tempQuestions = tempQuestions.map((question) => {
+          if (question.hs_formName == "q8") {
+            question.Response_1 = question.Response_1.filter((responseOption) => {
+              return !selectionsToRemoveFromQ8.includes(responseOption.trim()) || responseOption.trim() == "None";
+            });
+          }
+          return question;
+        });
+      }
+      // Remove None if items are selected
+      if (!temp.selections.includes("None") && temp.selections.length > 0) {
+        console.log("!includesNone and length > 0");
+        let indexOfNone = temp.Response_1.indexOf("None");
+        if (indexOfNone > -1) {
+          temp.Response_1.splice(indexOfNone, 1);
+        }
+      }
+      // Add None if no items are selected.
+      console.log(temp.selections);
+      console.log(temp.Response_1);
+
+      if (temp.selections.length == 0 && !temp.Response_1.includes("None")) {
+        temp.Response_1.push("None");
+      }
+
+      setQuestionList(tempQuestions);
+    }
     updateQuestionState(temp);
   }
 

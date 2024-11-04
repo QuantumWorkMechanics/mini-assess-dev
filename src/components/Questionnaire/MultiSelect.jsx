@@ -140,7 +140,7 @@ function MultiSelect({
               handleBack={handleBack}
               handleNext={handleNext}
               questionIndex={questionIndex}
-              isActive={currentQuestion.selections.length > 0 || currentQuestion.other}
+              isActive={currentQuestion.selections.length >= currentQuestion.min || currentQuestion.other}
               isAutoAdvance={isAutoAdvance}
               setIsAutoAdvance={setIsAutoAdvance}
               showAutoAdvance={false}

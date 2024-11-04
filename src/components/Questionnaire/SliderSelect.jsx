@@ -26,10 +26,10 @@ export default function SliderSelect({
   const CHAR_LIMIT = 300;
 
   useEffect(() => {
-    let isNeedsTip = currentSliderValue > 0 && currentSliderValue > desiredSliderValue;
-    if (isNeedsTip) {
-      setToolTipFlag((prev) => prev + 1);
-    }
+    let isNeedsTip = currentSliderValue > 0 && currentSliderValue >= desiredSliderValue && desiredSliderValue != 4;
+    // if (isNeedsTip) {
+    //   setToolTipFlag((prev) => prev + 1);
+    // }
     if (isError) {
       setIsError(false);
     } else if (isNeedsTip) {
@@ -37,13 +37,13 @@ export default function SliderSelect({
     }
   }, [currentSliderValue, desiredSliderValue]);
 
-  useEffect(() => {
-    if (isError) {
-      setTimeout(() => {
-        setIsError(false);
-      }, 3000);
-    }
-  }, [isError]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     setTimeout(() => {
+  //       setIsError(false);
+  //     }, 3000);
+  //   }
+  // }, [isError]);
 
   return (
     <>
@@ -71,14 +71,12 @@ export default function SliderSelect({
       </div>
       <div className="mt-5 md:items-center flex md:w-screen  flex-col md:flex md:flex-row">
         <div className="md:mt-40 md:-mr-10 z-20 md:w-1/3">
-          {spotLight == 1 && (
+          {/*spotLight == 1 && (
             <>
               <div className="hidden md:block absolute text-white z-50 text-2xl md:w-72  ml-20 animate-fade-up animate-once animate-duration-[800ms] animate-ease-linear ">
                 Use the sliders to select your current and desired level
               </div>
-              {/* <div className=" md:hidden absolute text-white z-50 text-2xl w-72 -mt-20 ml-20 animate-fade-up animate-once animate-duration-[800ms] animate-ease-linear ">
-                Tap to select your current and desired level
-              </div> */}
+
               <div
                 onClick={() => setSpotLight((prev) => prev + 1)}
                 className="max-sm:hidden mt-20 ml-36 md:ml-34 md:mt-44  z-50 absolute bg-white rounded animate-fade-up animate-once  animate-duration-[800ms] animate-ease-linear"
@@ -99,7 +97,7 @@ export default function SliderSelect({
                 className="max-sm:hidden pinhole z-30 w-[130px] h-[130px] mt-8 ml-32 md:mt-28 md:ml-32 rounded-full animate-fade-up animate-once animate-duration-[800ms] animate-ease-linear "
               ></div>
             </>
-          )}
+          )*/}
 
           <div
             className={
@@ -109,23 +107,25 @@ export default function SliderSelect({
             data-tip={currentQuestion.errorMessage}
           ></div>
 
-          <div className="md:flex items-center">
-            <Sliders
-              handleSlider={handleSlider}
-              handleCurrent={handleCurrent}
-              currentSliderValue={currentSliderValue}
-              handleDesired={handleDesired}
-              desiredSliderValue={desiredSliderValue}
-              isAutoAdvance={isAutoAdvance}
-              handleNext={handleNext}
-            ></Sliders>
-            <div className="-mt-40 hidden display h-80 md:flex md:-ml-28 text-xs text-slate-500 flex-row flex-row-reverse md:flex-col justify-between -ml-20 text-xs ">
-              {/* <div>Level 5</div> */}
-              <div>LEADER</div>
-              <div>MATURE</div>
-              <div>EMERGING</div>
-              <div className="mb-4">BASIC</div>
-              <div></div>
+          <div className="">
+            <div className="md:flex items-center">
+              <Sliders
+                handleSlider={handleSlider}
+                handleCurrent={handleCurrent}
+                currentSliderValue={currentSliderValue}
+                handleDesired={handleDesired}
+                desiredSliderValue={desiredSliderValue}
+                isAutoAdvance={isAutoAdvance}
+                handleNext={handleNext}
+              ></Sliders>
+              <div className="-mt-40 hidden display h-80 md:flex md:-ml-28 text-xs text-slate-500 flex-row flex-row-reverse md:flex-col justify-between -ml-20 text-xs ">
+                {/* <div>Level 5</div> */}
+                <div>LEADER</div>
+                <div>MATURE</div>
+                <div>EMERGING</div>
+                <div className="mb-4">BASIC</div>
+                <div></div>
+              </div>
             </div>
           </div>
         </div>
@@ -199,7 +199,10 @@ export default function SliderSelect({
           <RechartBar currentSliderValue={currentSliderValue} desiredSliderValue={desiredSliderValue}></RechartBar>
         </div>
       </div>
-      <div className="hidden md:block w-[screen]  ">
+      <div className="hidden md:block ml-0 md:w-[380px]  ">
+        <div className={"text-xs w-48 ml-28  " + (isError ? " text-red-700 " : "")}>
+          {!isError ? "Use above ranges to select Current and Desired value." : currentQuestion.errorMessage}
+        </div>
         <Controls
           currentQuestion={currentQuestion}
           handleBack={handleBack}
